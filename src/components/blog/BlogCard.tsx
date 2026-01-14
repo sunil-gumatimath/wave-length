@@ -100,7 +100,7 @@ export function BlogCard({ post, index = 0 }: BlogCardProps) {
                         const date = new Date(post.publishedAt);
                         if (isNaN(date.getTime())) return '';
                         return format(date, 'MMM d, yyyy');
-                      } catch (e) {
+                      } catch {
                         return '';
                       }
                     })()}

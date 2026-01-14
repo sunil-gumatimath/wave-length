@@ -8,7 +8,7 @@ import { eq } from 'drizzle-orm';
 // ============================================================================
 
 // Helper to execute raw SQL via the proxy and get properly typed results
-async function executeRawQuery<T>(query: string, params: any[] = []): Promise<T[]> {
+async function executeRawQuery<T>(query: string, params: unknown[] = []): Promise<T[]> {
   const proxyUrl = getProxyUrl();
 
   const res = await fetch(proxyUrl, {
