@@ -27,9 +27,9 @@ export function Header() {
 
         {/* Logo */}
         <Link to="/" className="flex items-center space-x-2">
-          <img src="/logo.svg" alt="TedBlog Logo" className="h-9 w-9 object-contain" />
+          <img src="/logo.svg" alt="Wavelength Logo" className="h-9 w-9 object-contain" />
           <span className="text-2xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-            TedBlog
+            Wavelength
           </span>
         </Link>
 

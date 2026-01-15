@@ -133,7 +133,7 @@ function toRobotsTxt(siteUrl: string): string {
 
 async function main() {
   const siteUrl = normalizeSiteUrl(process.env.SITE_URL ?? process.env.VITE_SITE_URL);
-  const siteName = process.env.SITE_NAME ?? process.env.VITE_SITE_NAME ?? 'TedBlog';
+  const siteName = process.env.SITE_NAME ?? process.env.VITE_SITE_NAME ?? 'Wavelength';
   const description =
     process.env.SITE_DESCRIPTION ??
     process.env.VITE_DEFAULT_DESCRIPTION ??

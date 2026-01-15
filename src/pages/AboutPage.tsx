@@ -52,7 +52,7 @@ export function AboutPage() {
     <>
       <SEO
         title="About"
-        description="Learn more about TedBlog — a modern blog built with React, Vite, and ShadCN UI."
+        description="Learn more about Wavelength — a modern blog built with React, Vite, and ShadCN UI."
       />
 
       <div className="py-12 px-4">
@@ -70,7 +70,7 @@ export function AboutPage() {
             >
               About{' '}
               <span className="bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-                TedBlog
+                Wavelength
               </span>
             </motion.h1>
             <motion.p
@@ -92,7 +92,7 @@ export function AboutPage() {
               <div className="bg-gradient-to-r from-primary/10 to-transparent p-8">
                 <h2 className="text-2xl font-bold mb-4">What This Site Is For</h2>
                 <p className="text-muted-foreground leading-relaxed text-lg">
-                  TedBlog is a lightweight place to publish posts, organize them by
+                  Wavelength is a lightweight place to publish posts, organize them by
                   category, and make them easy to find later. It’s designed to stay
                   readable, responsive, and quick to navigate.
                 </p>

@@ -27,10 +27,10 @@ function toAbsoluteUrl(value: string, siteUrl: string): string {
 }
 
 const defaultMeta = {
-    siteName: (import.meta.env.VITE_SITE_NAME as string | undefined) || "TedBlog",
+    siteName: (import.meta.env.VITE_SITE_NAME as string | undefined) || "Wavelength",
     title:
         (import.meta.env.VITE_DEFAULT_TITLE as string | undefined) ||
-        "TedBlog - Personal Blog",
+        "Wavelength - Personal Blog",
     description:
         (import.meta.env.VITE_DEFAULT_DESCRIPTION as string | undefined) ||
         "Personal blog about web development, technology, and building things.",

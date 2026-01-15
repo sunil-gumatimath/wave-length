@@ -114,7 +114,7 @@ export function HomePage() {
               >
                 Welcome to{' '}
                 <span className="bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent">
-                  TedBlog
+                  Wavelength
                 </span>
               </motion.h1>
 
@@ -290,7 +290,7 @@ export function HomePage() {
               viewport={{ once: true }}
               className="text-center mb-12"
             >
-              <h2 className="text-3xl md:text-4xl font-bold mb-4">Why TedBlog?</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4">Why Wavelength?</h2>
               <p className="text-muted-foreground max-w-2xl mx-auto">
                 A modern blogging platform built with the latest web technologies
               </p>

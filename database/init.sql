@@ -55,11 +55,11 @@ CREATE TABLE IF NOT EXISTS comments (
 
 -- Insert Users (Authors)
 INSERT INTO users (name, email, avatar, bio) VALUES
-('Sarah Chen', 'sarah@tedblog.com', 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200', 'Senior Frontend Engineer at Google. Passionate about React, performance optimization, and creating beautiful user experiences.'),
-('Marcus Johnson', 'marcus@tedblog.com', 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200', 'Full-stack developer and open source contributor. I love building tools that make developers lives easier.'),
-('Emily Rodriguez', 'emily@tedblog.com', 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200', 'UI/UX Designer turned Frontend Developer. Bridging the gap between design and code.'),
-('David Kim', 'david@tedblog.com', 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200', 'Backend architect with 10+ years experience. Node.js, PostgreSQL, and cloud infrastructure expert.'),
-('Priya Patel', 'priya@tedblog.com', 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200', 'DevOps Engineer and Technical Writer. Making complex topics accessible to everyone.')
+('Sarah Chen', 'sarah@wavelength.dev', 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200', 'Senior Frontend Engineer at Google. Passionate about React, performance optimization, and creating beautiful user experiences.'),
+('Marcus Johnson', 'marcus@wavelength.dev', 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200', 'Full-stack developer and open source contributor. I love building tools that make developers lives easier.'),
+('Emily Rodriguez', 'emily@wavelength.dev', 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200', 'UI/UX Designer turned Frontend Developer. Bridging the gap between design and code.'),
+('David Kim', 'david@wavelength.dev', 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200', 'Backend architect with 10+ years experience. Node.js, PostgreSQL, and cloud infrastructure expert.'),
+('Priya Patel', 'priya@wavelength.dev', 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200', 'DevOps Engineer and Technical Writer. Making complex topics accessible to everyone.')
 ON CONFLICT (email) DO NOTHING;
 
 -- Insert Categories

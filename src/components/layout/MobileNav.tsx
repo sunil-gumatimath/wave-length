@@ -33,9 +33,9 @@ export function MobileNav() {
             <SheetContent side="left" className="w-[280px] sm:w-[350px]">
                 <SheetHeader className="border-b pb-4">
                     <SheetTitle className="flex items-center gap-2">
-                        <img src="/logo.svg" alt="TedBlog Logo" className="h-8 w-8" />
+                        <img src="/logo.svg" alt="Wavelength Logo" className="h-8 w-8" />
                         <span className="text-xl font-bold bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-                            TedBlog
+                            Wavelength
                         </span>
                     </SheetTitle>
                 </SheetHeader>
