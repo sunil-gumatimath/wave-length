@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useState, type FormEvent } from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, Sparkles, Mail, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -11,13 +11,26 @@ import { usePosts } from '@/hooks/usePosts';
 import { toast } from 'sonner';
 
 export function HomePage() {
-  const { posts, loading } = usePosts();
+  const { posts, loading, error, refetch } = usePosts();
   const [email, setEmail] = useState('');
   const [isSubscribed, setIsSubscribed] = useState(false);
+  const shouldReduceMotion = useReducedMotion();
+  const motionEnabled = !shouldReduceMotion;
 
-  const handleSubscribe = (e: React.FormEvent) => {
+  const handleSubscribe = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!email) return;
+    const normalizedEmail = email.trim();
+    if (!normalizedEmail) {
+      toast.error('Please enter your email.');
+      return;
+    }
+
+    // Basic client-side validation (browser also validates via type="email")
+    const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail);
+    if (!isValidEmail) {
+      toast.error('Please enter a valid email address.');
+      return;
+    }
 
     // Simulate subscription
     setIsSubscribed(true);
@@ -52,39 +65,43 @@ export function HomePage() {
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/10 via-transparent to-transparent" />
 
           {/* Animated shapes */}
-          <motion.div
-            className="absolute top-20 left-10 w-72 h-72 bg-primary/5 rounded-full blur-3xl"
-            animate={{
-              scale: [1, 1.2, 1],
-              opacity: [0.3, 0.5, 0.3],
-            }}
-            transition={{
-              duration: 8,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          />
-          <motion.div
-            className="absolute bottom-20 right-10 w-96 h-96 bg-primary/5 rounded-full blur-3xl"
-            animate={{
-              scale: [1.2, 1, 1.2],
-              opacity: [0.5, 0.3, 0.5],
-            }}
-            transition={{
-              duration: 8,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          />
+          {motionEnabled && (
+            <motion.div
+              className="absolute top-20 left-10 w-72 h-72 bg-primary/5 rounded-full blur-3xl"
+              animate={{
+                scale: [1, 1.2, 1],
+                opacity: [0.3, 0.5, 0.3],
+              }}
+              transition={{
+                duration: 8,
+                repeat: Infinity,
+                ease: 'easeInOut',
+              }}
+            />
+          )}
+          {motionEnabled && (
+            <motion.div
+              className="absolute bottom-20 right-10 w-96 h-96 bg-primary/5 rounded-full blur-3xl"
+              animate={{
+                scale: [1.2, 1, 1.2],
+                opacity: [0.5, 0.3, 0.5],
+              }}
+              transition={{
+                duration: 8,
+                repeat: Infinity,
+                ease: 'easeInOut',
+              }}
+            />
+          )}
 
           <div className="container mx-auto text-center relative z-10">
             <motion.div
-              initial="hidden"
-              animate="visible"
-              variants={containerVariants}
+              initial={motionEnabled ? 'hidden' : false}
+              animate={motionEnabled ? 'visible' : undefined}
+              variants={motionEnabled ? containerVariants : undefined}
             >
               <motion.div
-                variants={itemVariants}
+                variants={motionEnabled ? itemVariants : undefined}
                 className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary mb-6 text-sm font-medium"
               >
                 <Sparkles className="h-4 w-4" />
@@ -92,7 +109,7 @@ export function HomePage() {
               </motion.div>
 
               <motion.h1
-                variants={itemVariants}
+                variants={motionEnabled ? itemVariants : undefined}
                 className="text-5xl md:text-7xl font-bold tracking-tight mb-6"
               >
                 Welcome to{' '}
@@ -102,14 +119,14 @@ export function HomePage() {
               </motion.h1>
 
               <motion.p
-                variants={itemVariants}
+                variants={motionEnabled ? itemVariants : undefined}
                 className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8 leading-relaxed"
               >
                 I share notes on web development, technology, and building things.
               </motion.p>
 
               <motion.div
-                variants={itemVariants}
+                variants={motionEnabled ? itemVariants : undefined}
                 className="flex gap-4 justify-center flex-wrap"
               >
                 <Button size="lg" asChild className="shadow-lg shadow-primary/20">
@@ -130,8 +147,8 @@ export function HomePage() {
         <section className="py-20 px-4">
           <div className="container mx-auto">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={motionEnabled ? { opacity: 0, y: 20 } : false}
+              whileInView={motionEnabled ? { opacity: 1, y: 0 } : undefined}
               viewport={{ once: true }}
               className="flex items-center justify-between mb-10"
             >
@@ -149,10 +166,27 @@ export function HomePage() {
 
             {loading ? (
               <BlogListSkeleton count={3} />
+            ) : error ? (
+              <motion.div
+                initial={motionEnabled ? { opacity: 0 } : false}
+                animate={motionEnabled ? { opacity: 1 } : undefined}
+                className="text-center py-16 bg-muted/30 rounded-xl"
+              >
+                <p className="text-xl font-medium mb-2">Couldn’t load posts</p>
+                <p className="text-muted-foreground mb-6">{error}</p>
+                <div className="flex items-center justify-center gap-3 flex-wrap">
+                  <Button variant="outline" onClick={() => void refetch()}>
+                    Retry
+                  </Button>
+                  <Button asChild>
+                    <Link to="/blog">Browse blog</Link>
+                  </Button>
+                </div>
+              </motion.div>
             ) : posts.length === 0 ? (
               <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
+                initial={motionEnabled ? { opacity: 0 } : false}
+                animate={motionEnabled ? { opacity: 1 } : undefined}
                 className="text-center py-16 bg-muted/30 rounded-xl"
               >
                 <p className="text-xl text-muted-foreground mb-4">No posts yet</p>
@@ -169,8 +203,8 @@ export function HomePage() {
             )}
 
             <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
+              initial={motionEnabled ? { opacity: 0 } : false}
+              whileInView={motionEnabled ? { opacity: 1 } : undefined}
               viewport={{ once: true }}
               className="text-center mt-8 sm:hidden"
             >
@@ -188,8 +222,8 @@ export function HomePage() {
         <section className="py-20 px-4">
           <div className="container mx-auto">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={motionEnabled ? { opacity: 0, y: 20 } : false}
+              whileInView={motionEnabled ? { opacity: 1, y: 0 } : undefined}
               viewport={{ once: true }}
               className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/10 via-primary/5 to-transparent p-8 md:p-12"
             >
@@ -198,8 +232,8 @@ export function HomePage() {
 
               <div className="relative z-10 text-center max-w-2xl mx-auto">
                 <motion.div
-                  initial={{ scale: 0 }}
-                  whileInView={{ scale: 1 }}
+                  initial={motionEnabled ? { scale: 0 } : false}
+                  whileInView={motionEnabled ? { scale: 1 } : undefined}
                   viewport={{ once: true }}
                   className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/10 mb-6"
                 >
@@ -214,21 +248,27 @@ export function HomePage() {
 
                 {isSubscribed ? (
                   <motion.div
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
+                    initial={motionEnabled ? { opacity: 0, scale: 0.8 } : false}
+                    animate={motionEnabled ? { opacity: 1, scale: 1 } : undefined}
                     className="inline-flex items-center gap-2 text-primary font-medium"
                   >
                     <Check className="h-5 w-5" />
                     You're subscribed! Check your inbox.
                   </motion.div>
                 ) : (
-                  <form onSubmit={handleSubscribe} className="flex gap-3 max-w-md mx-auto">
+                  <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+                    <label htmlFor="newsletter-email" className="sr-only">
+                      Email address
+                    </label>
                     <Input
+                      id="newsletter-email"
                       type="email"
                       placeholder="Enter your email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       className="flex-1 bg-background"
+                      autoComplete="email"
+                      inputMode="email"
                       required
                     />
                     <Button type="submit">
@@ -245,8 +285,8 @@ export function HomePage() {
         <section className="py-20 px-4 bg-muted/30">
           <div className="container mx-auto">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              initial={motionEnabled ? { opacity: 0, y: 20 } : false}
+              whileInView={motionEnabled ? { opacity: 1, y: 0 } : undefined}
               viewport={{ once: true }}
               className="text-center mb-12"
             >
@@ -276,10 +316,10 @@ export function HomePage() {
               ].map((feature, index) => (
                 <motion.div
                   key={feature.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
+                  initial={motionEnabled ? { opacity: 0, y: 20 } : false}
+                  whileInView={motionEnabled ? { opacity: 1, y: 0 } : undefined}
                   viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
+                  transition={motionEnabled ? { delay: index * 0.1 } : undefined}
                   className="text-center p-6 rounded-xl bg-background shadow-sm border"
                 >
                   <div className="text-4xl mb-4">{feature.icon}</div>

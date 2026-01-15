@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import type { Post, NewPost } from '@/db/schema';
@@ -41,7 +41,7 @@ export function PostForm({ post, onSubmit, loading = false }: PostFormProps) {
   const {
     register,
     handleSubmit,
-    watch,
+    control,
     setValue,
     formState: { errors, isDirty },
   } = useForm<PostFormValues>({
@@ -56,9 +56,11 @@ export function PostForm({ post, onSubmit, loading = false }: PostFormProps) {
     },
   });
 
-  const title = watch('title');
-  const content = watch('content');
-  const coverImage = watch('coverImage');
+  // Use `useWatch` instead of `watch()` to avoid React Compiler / eslint warnings
+  // about non-memoizable function values coming from `useForm()`.
+  const title = useWatch({ control, name: 'title' }) ?? '';
+  const content = useWatch({ control, name: 'content' }) ?? '';
+  const coverImage = useWatch({ control, name: 'coverImage' }) ?? '';
 
   // Auto-generate slug from title
   useEffect(() => {
