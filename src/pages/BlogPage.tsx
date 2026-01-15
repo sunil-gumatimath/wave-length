@@ -84,7 +84,7 @@ export function BlogPage() {
         description="Explore my latest posts on web development, technology, and building things."
       />
 
-      <div className="py-12 px-4">
+      <div className="pt-20 pb-12 px-4">
         <div className="container mx-auto">
           {/* Header */}
           <motion.div

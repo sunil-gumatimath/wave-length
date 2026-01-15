@@ -20,7 +20,7 @@ export function Header() {
     import.meta.env.DEV || import.meta.env.VITE_ENABLE_ADMIN === 'true';
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b bg-background backdrop-blur">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         {/* Mobile Nav */}
         <MobileNav />
@@ -38,19 +38,19 @@ export function Header() {
           {navItems
             .filter((item) => !item.requiresAdmin || enableAdmin)
             .map(({ href, label }) => (
-            <Link
-              key={href}
-              to={href}
-              className={cn(
-                "text-sm font-medium transition-colors hover:text-foreground",
-                location.pathname === href
-                  ? "text-foreground"
-                  : "text-muted-foreground"
-              )}
-            >
-              {label}
-            </Link>
-          ))}
+              <Link
+                key={href}
+                to={href}
+                className={cn(
+                  "text-sm font-medium transition-colors hover:text-foreground",
+                  location.pathname === href
+                    ? "text-foreground"
+                    : "text-muted-foreground"
+                )}
+              >
+                {label}
+              </Link>
+            ))}
         </nav>
 
         {/* Right side actions */}
